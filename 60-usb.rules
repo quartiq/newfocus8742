@@ -1,0 +1,6 @@
+# Copy this file to /etc/udev/rules.d/
+
+# Please keep this list sorted by VID:PID
+
+# NewFocus (Newport) 8742 piezo motor driver
+ATTRS{idVendor}=="104d", ATTRS{idProduct}=="4000", MODE="660", GROUP="plugdev", TAG+="uaccess"
