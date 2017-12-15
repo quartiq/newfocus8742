@@ -4,6 +4,7 @@ import asyncio
 
 from newfocus8742.usb import NewFocus8742USB as USB
 from newfocus8742.tcp import NewFocus8742TCP as TCP
+from newfocus8742.sim import NewFocus8742Sim as Sim
 
 
 def main():
@@ -11,10 +12,11 @@ def main():
     loop = asyncio.get_event_loop()
     loop.set_debug(False)
     async def run():
-        with USB.connect() as dev:
+        # with await USB.connect() as dev:
+        with await Sim.connect() as dev:
         # with await TCP.connect("8742-37565") as dev:
             # await test(dev)
-            # await dump(dev)
+            await dump(dev)
             dev.stop()
             dev.abort()
             print(await dev.error_message())
@@ -33,7 +35,7 @@ def main():
 
 async def dump(dev):
     for i in range(4):
-        for cmd in "AC DH MD MV PA PR QM TP VA".split():
+        for cmd in "AC DH MD PA PR QM TP VA".split():
             print(1 + i, cmd, await dev.ask(cmd + "?", 1 + i))
     for cmd in ("SA SC SD TB TE VE ZZ "
                 "GATEWAY HOSTNAME IPADDR IPMODE MACADDR NETMASK "

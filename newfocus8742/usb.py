@@ -28,7 +28,7 @@ class NewFocus8742USB(NewFocus8742Protocol):
         self.flush()
 
     @classmethod
-    def connect(cls, idVendor=0x104d, idProduct=0x4000, **kwargs):
+    async def connect(cls, idVendor=0x104d, idProduct=0x4000, **kwargs):
         """Connect to a Newfocus/Newport 8742 controller over USB.
 
         Args:
