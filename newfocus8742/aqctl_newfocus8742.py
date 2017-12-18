@@ -11,9 +11,7 @@ from artiq import tools
 
 def get_argparser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--usb", action="store_true",
-            help="use USB device")
-    parser.add_argument("--tcp", help="use TCP device")
+    parser.add_argument("--tcp", help="use TCP device, else use first USB device")
     parser.add_argument("--simulation", action="store_true",
                         help="simulation device")
 
@@ -36,12 +34,9 @@ def main():
     elif args.tcp:
         from .tcp import NewFocus8742TCP
         dev = loop.run_until_complete(NewFocus8742TCP.connect(args.tcp))
-    elif args.usb:
+    else:
         from .usb import NewFocus8742USB
         dev = loop.run_until_complete(NewFocus8742USB.connect(args.usb))
-    else:
-        print("Invalid device, needs to bei either usb, tcp or simulation")
-        sys.exit(1)
 
     try:
         simple_server_loop({"newfocus8742": dev},

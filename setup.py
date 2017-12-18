@@ -21,7 +21,7 @@ setup(
         "console_scripts": [
             "aqctl_newfocus8742 = newfocus8742.aqctl_newfocus8742:main",
         ],
-        },
+    },
     test_suite="newfocus8742.test",
     license="LGPLv3+",
 )
