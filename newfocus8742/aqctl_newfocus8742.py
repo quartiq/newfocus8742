@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+import argparse
+import sys
+import os
+import asyncio
+
+from artiq.protocols.pc_rpc import simple_server_loop
+from artiq import tools
+
+
+def get_argparser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--usb", action="store_true",
+            help="use USB device")
+    parser.add_argument("--tcp", help="use TCP device")
+    parser.add_argument("--simulation", action="store_true",
+                        help="simulation device")
+
+    tools.simple_network_args(parser, 3257)
+    tools.verbosity_args(parser)
+    return parser
+
+
+def main():
+    args = get_argparser().parse_args()
+    tools.init_logger(args)
+
+    if os.name == "nt":
+        asyncio.set_event_loop(asyncio.ProactorEventLoop())
+    loop = asyncio.get_event_loop()
+
+    if args.simulation:
+        from .sim import NewFocus8742Sim
+        dev = loop.run_until_complete(NewFocus8742Sim.connect())
+    elif args.tcp:
+        from .tcp import NewFocus8742TCP
+        dev = loop.run_until_complete(NewFocus8742TCP.connect(args.tcp))
+    elif args.usb:
+        from .usb import NewFocus8742USB
+        dev = loop.run_until_complete(NewFocus8742USB.connect(args.usb))
+    else:
+        print("Invalid device, needs to bei either usb, tcp or simulation")
+        sys.exit(1)
+
+    try:
+        simple_server_loop({"newfocus8742": dev},
+                tools.bind_address_from_args(args), args.port)
+    finally:
+        dev.close()
+
+if __name__ == "__main__":
+    main()

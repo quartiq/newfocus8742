@@ -305,3 +305,13 @@ class NewFocus8742Protocol:
     async def finish(self, xx=None):
         while not await self.done(xx):
             await asyncio.sleep(self.poll_interval)
+
+    async def ping(self):
+        try:
+            await self.ask("VE?")
+        except asyncio.CancelledError:
+            raise
+        except:
+            logger.warning("ping failed", exc_info=True)
+            return False
+        return True

@@ -17,6 +17,11 @@ setup(
     download_url="https://github.com/quartiq/newfocus8742",
     packages=find_packages(),
     install_requires=[],
+    entry_points={
+        "console_scripts": [
+            "aqctl_newfocus8742 = newfocus8742.aqctl_newfocus8742:main",
+        ],
+        },
     test_suite="newfocus8742.test",
     license="LGPLv3+",
 )

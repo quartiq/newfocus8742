@@ -37,12 +37,15 @@ class NewFocus8742Sim(NewFocus8742Protocol):
         return self
 
     def __exit__(self, *exc):
+        self.close()
+
+    def close(self):
         if self.pending:
             raise ValueError("pending data {}".format(self.pending))
 
     def _writeline(self, cmd):
-        m = re.match(r"^(?P<ch>\d)?\s*\*?(?P<cmd>[a-zA-Z]+)\s*"
-                r"(?P<args>\d+(,\s*\d+)*)?(?P<ask>\?)?$", cmd)
+        m = re.match(r"^(?P<xx>\d)?\s*\*?(?P<cmd>[a-zA-Z]+)\s*"
+                r"(?P<nn>\d+(,\s*\d+)*)?(?P<ask>\?)?$", cmd)
         assert m
         d = m.groupdict()
         if d["ask"] == "?":
@@ -50,10 +53,10 @@ class NewFocus8742Sim(NewFocus8742Protocol):
         else:
             f = getattr(self, "do_{}".format(d["cmd"].lower()), None)
         kwargs = {}
-        if d["ch"] is not None:
-            kwargs["xx"] = int(d["ch"])
-        if d["args"]:
-            args = tuple(int(i) for i in d["args"].split(","))
+        if d["xx"] is not None:
+            kwargs["xx"] = int(d["xx"])
+        if d["nn"]:
+            args = tuple(int(i) for i in d["nn"].split(","))
         else:
             args = ()
         ret = None
@@ -78,30 +81,39 @@ class NewFocus8742Sim(NewFocus8742Protocol):
         return "Newfocus 8742, simulated"
 
     def do_va(self, nn, xx):
+        assert 1 <= xx <= 4
         self.velocity[xx - 1] = nn
 
     def ask_va(self, xx):
+        assert 1 <= xx <= 4
         return self.velocity[xx - 1]
 
     def do_pa(self, nn, xx):
+        assert 1 <= xx <= 4
         self.position[xx - 1] = nn
 
     def ask_pa(self, xx):
+        assert 1 <= xx <= 4
         return self.position[xx - 1]
 
     def do_pr(self, nn, xx):
+        assert 1 <= xx <= 4
         self.position[xx - 1] += nn
 
     def ask_pr(self, xx):
+        assert 1 <= xx <= 4
         return 0
 
     def ask_tp(self, xx):
+        assert 1 <= xx <= 4
         return self.position[xx - 1] - self.home[xx - 1]
 
     def do_ac(self, nn, xx):
+        assert 1 <= xx <= 4
         self.acceleration[xx - 1] = nn
 
     def ask_ac(self, xx):
+        assert 1 <= xx <= 4
         return self.acceleration[xx - 1]
 
     def do_sm(self, xx=None):
@@ -111,23 +123,28 @@ class NewFocus8742Sim(NewFocus8742Protocol):
         pass
 
     def do_qm(self, *nn, xx):
+        assert 1 <= xx <= 4
         pass
 
     def ask_qm(self, xx):
         return 2
 
     def ask_dh(self, xx):
+        assert 1 <= xx <= 4
         return self.home[xx - 1]
 
     def do_dh(self, *nn, xx):
+        assert 1 <= xx <= 4
         nn = nn[0] if nn else 0
         self.position[xx - 1] += self.home[xx - 1] - nn
         self.home[xx - 1] = nn
 
     def ask_md(self, xx):
+        assert 1 <= xx <= 4
         return random.randint(0, 1)
 
     def do_mv(self, *nn, xx):
+        assert 1 <= xx <= 4
         nn = nn[0] if nn else 1
         self.position[xx - 1] += nn
 

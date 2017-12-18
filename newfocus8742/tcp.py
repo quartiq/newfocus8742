@@ -31,6 +31,9 @@ class NewFocus8742TCP(NewFocus8742Protocol):
         return self
 
     def __exit__(self, *exc):
+        self.close()
+
+    def close(self):
         self._writer.close()
 
     def _writeline(self, cmd):
