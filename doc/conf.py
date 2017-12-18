@@ -18,8 +18,27 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 # import os
-# import sys
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
+
+import sphinx_rtd_theme
+from unittest.mock import MagicMock
+
+
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        if name == "_mock_methods":
+            return None
+        return Mock()
+
+
+mock_modules = ["artiq", "artiq.protocols", "artiq.protocols.pc_rpc",
+                "artiq.tools", "usb", "usb.core", "usb.util"]
+
+for module in mock_modules:
+    sys.modules[module] = Mock()
+
 
 # -- General configuration ------------------------------------------------
 
