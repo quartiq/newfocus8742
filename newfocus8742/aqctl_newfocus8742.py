@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-import sys
 import os
 import asyncio
 
@@ -11,7 +10,8 @@ from artiq import tools
 
 def get_argparser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--tcp", help="use TCP device, else use first USB device")
+    parser.add_argument("--tcp", help="use TCP device, else use first "
+                                      "USB device")
     parser.add_argument("--simulation", action="store_true",
                         help="simulation device")
 
@@ -40,9 +40,10 @@ def main():
 
     try:
         simple_server_loop({"newfocus8742": dev},
-                tools.bind_address_from_args(args), args.port)
+                           tools.bind_address_from_args(args), args.port)
     finally:
         dev.close()
+
 
 if __name__ == "__main__":
     main()
