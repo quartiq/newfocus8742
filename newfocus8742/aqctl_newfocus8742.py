@@ -41,6 +41,8 @@ def main():
     try:
         simple_server_loop({"newfocus8742": dev},
                            tools.bind_address_from_args(args), args.port)
+    except KeyboardInterrupt:
+        pass
     finally:
         dev.close()
 
