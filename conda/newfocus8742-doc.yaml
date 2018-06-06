@@ -2,12 +2,12 @@
 # $ conda env create -f conda/newfocus8472-doc.yaml
 name: newfocus8742-doc
 channels:
+  - conda-forge/label/main
   - m-labs/label/dev
   - m-labs/label/main
-  - conda-forge/label/main
   - defaults
 dependencies:
   - python>=3.5.3
   - sphinx=1.4.8
-  - sphinx-argparse
   - sphinx_rtd_theme
+  - sphinx-argparse
