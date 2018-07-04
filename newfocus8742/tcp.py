@@ -1,6 +1,9 @@
+import logging
 import asyncio
 
 from .protocol import NewFocus8742Protocol
+
+logger = logging.getLogger(__name__)
 
 
 class NewFocus8742TCP(NewFocus8742Protocol):
@@ -24,7 +27,7 @@ class NewFocus8742TCP(NewFocus8742Protocol):
         reader, writer = await asyncio.open_connection(host, port, **kwargs)
         # undocumented? garbage?
         v = await reader.read(6)
-        assert v == b"\xff\xfb\x01\xff\xfb\x03", v
+        logger.debug("identifier/serial (?): %s", v)
         return cls(reader, writer)
 
     def __enter__(self):
