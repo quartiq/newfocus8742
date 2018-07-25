@@ -1,0 +1,10 @@
+conda:
+  stage: deploy
+  image: continuumio/miniconda3:latest
+  tags:
+    - docker
+  script:
+    - conda install -n base conda-build conda-verify anaconda-client
+    - conda config --set anaconda_upload yes
+    - conda list
+    - conda build -c quartiq -c m-labs -c conda-forge conda
