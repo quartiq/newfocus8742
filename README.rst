@@ -1,6 +1,10 @@
 New Focus 8742 driver
 =====================
 
+.. image:: https://gitlab.com/quartiq/newfocus8742/badges/master/pipeline.svg
+    :target: https://gitlab.com/quartiq/newfocus8742/commits/master
+    :alt: CI/CD Pipeline Status
+
 .. image:: https://readthedocs.org/projects/newfocus8742/badge/?version=latest
     :target: http://newfocus8742.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
