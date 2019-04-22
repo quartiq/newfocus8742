@@ -16,7 +16,10 @@ def get_argparser():
                         help="simulation device")
 
     tools.simple_network_args(parser, 3257)
-    tools.add_common_args(parser)
+    if hasattr(tools, "add_common_args"):
+        tools.add_common_args(parser)  # ARTIQ-5
+    else:
+        tools.verbosity_args(parser)   # ARTIQ-4
     return parser
 
 
