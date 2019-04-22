@@ -39,7 +39,7 @@ def main():
         dev = loop.run_until_complete(NewFocus8742TCP.connect(args.tcp))
     else:
         from .usb import NewFocus8742USB
-        dev = loop.run_until_complete(NewFocus8742USB.connect(args.usb))
+        dev = loop.run_until_complete(NewFocus8742USB.connect())
 
     try:
         simple_server_loop({"newfocus8742": dev},
