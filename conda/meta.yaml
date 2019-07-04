@@ -19,13 +19,13 @@ requirements:
     - setuptools
   run:
     - python >=3.5.3
-    - artiq
+#    - artiq
 #    - pyusb
 
 test:
   imports:
     - newfocus8742.tcp
-    - newfocus8742.aqctl_newfocus8742
+#     - newfocus8742.aqctl_newfocus8742
 
 about:
   home: https://github.com/quartiq/newfocus8742
