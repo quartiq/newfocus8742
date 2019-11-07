@@ -4,8 +4,8 @@ import argparse
 import os
 import asyncio
 
-from artiq.protocols.pc_rpc import simple_server_loop
-from artiq import tools
+from sipyco.pc_rpc import simple_server_loop
+from sipyco import common_args
 
 
 def get_argparser():
@@ -15,17 +15,14 @@ def get_argparser():
     parser.add_argument("--simulation", action="store_true",
                         help="simulation device")
 
-    tools.simple_network_args(parser, 3257)
-    if hasattr(tools, "add_common_args"):
-        tools.add_common_args(parser)  # ARTIQ-5
-    else:
-        tools.verbosity_args(parser)   # ARTIQ-4
+    common_args.simple_network_args(parser, 3257)
+    common_args.verbosity_args(parser)
     return parser
 
 
 def main():
     args = get_argparser().parse_args()
-    tools.init_logger(args)
+    common_args.init_logger_from_args(args)
 
     if os.name == "nt":
         asyncio.set_event_loop(asyncio.ProactorEventLoop())
@@ -43,7 +40,7 @@ def main():
 
     try:
         simple_server_loop({"newfocus8742": dev},
-                           tools.bind_address_from_args(args), args.port)
+                           common_args.bind_address_from_args(args), args.port)
     except KeyboardInterrupt:
         pass
     finally:

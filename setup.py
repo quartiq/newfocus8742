@@ -6,7 +6,7 @@ from setuptools import find_packages
 
 setup(
     name="newfocus8742",
-    version="0.1",
+    version="0.2",
     description="Driver for New Focus/Newport 8742 four channel open loop "
                 "piezo motor controller",
     long_description=open("README.rst").read(),
@@ -15,7 +15,7 @@ setup(
     url="https://github.com/quartiq/newfocus8742",
     download_url="https://github.com/quartiq/newfocus8742",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=["sipyco"],
     entry_points={
         "console_scripts": [
             "aqctl_newfocus8742 = newfocus8742.aqctl_newfocus8742:main",
