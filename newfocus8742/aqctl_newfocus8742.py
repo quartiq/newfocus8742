@@ -39,8 +39,12 @@ def main():
         dev = loop.run_until_complete(NewFocus8742USB.connect())
 
     try:
-        simple_server_loop({"newfocus8742": dev},
-                           common_args.bind_address_from_args(args), args.port)
+        simple_server_loop(
+            {"newfocus8742": dev},
+            common_args.bind_address_from_args(args),
+            args.port,
+            loop=loop,
+        )
     except KeyboardInterrupt:
         pass
     finally:
